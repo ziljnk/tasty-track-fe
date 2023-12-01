@@ -4,7 +4,7 @@
       :to="{ name: 'home' }"
       class="inline-flex items-center h-full px-5 text-orange-500 font-bold"
     >
-      Home
+      <img src="src/assets/Homepage/png/tasty-track-logo-without-bg.png" width="90" height="90"/>
     </router-link>
     <div class="flex items-center gap-1">
       <router-link
