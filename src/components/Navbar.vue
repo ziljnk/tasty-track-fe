@@ -1,7 +1,7 @@
 <template>
 <header class="bg-white shadow flex justify-start items-center" style="flex-direction: column; height: 100vh; width: 200px; position: absolute; left: 0; top: 0;">
     <router-link :to="{ name: 'home' }" class="inline-flex items-center px-5 text-orange-500 font-bold">
-        <img src="src/assets/Homepage/png/tasty-track-logo-without-bg.png" width="90" height="90" />
+        <img src="../assets/Homepage/png/tasty-track-logo-without-bg.png" width="90" height="90" />
     </router-link>
     <div class="flex items-start gap-1" style="flex-direction: column;">
         <router-link :to="{ name: 'mealPlanner' }" class="inline-flex items-center px-2 transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
