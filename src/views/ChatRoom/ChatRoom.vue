@@ -18,7 +18,7 @@
             <div class="message-input">
                 <input @keypress="hanleKeyPress" v-model="messageContent" type="text" placeholder="Type your message here" />
                 <button @click="handleSend" class="button-send" v-if="messageContent">
-                    <img width="20" height="20" src="../../assets/ChatRoom/svg/send.svg"/>
+                    <img width="20" height="20" src="/send.svg"/>
                 </button>
             </div>
         </div>
