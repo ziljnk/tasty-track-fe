@@ -7,7 +7,6 @@ import MealsByLetter from '../views/MealsByLetter.vue'
 import MealsByName from '../views/MealsByName.vue'
 import MealDetails from '../views/MealDetails.vue'
 import Ingredients from '../views/Ingredients.vue'
-import Login from "../views/Login/Login.vue";
 import ChatRoom from "../views/ChatRoom/ChatRoom.vue";
 import ExercisesRoom from "../views/ExercisesRoom/ExercisesRoom.vue";
 import MealPlanner from "../views/MealPlanner/MealPlanner.vue";
@@ -69,10 +68,6 @@ const routes = [
         component: InstructionsAnalyzer
       }
     ]
-  },
-  {
-    path: '/login',
-    component: Login
   }
 ];
 
