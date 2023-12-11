@@ -1,10 +1,14 @@
 <template>
-  <navbar />
-  <main>
-    <div class="max-w-[1200px] mx-auto">
-      <router-view />
+  <div style="width: 100%; height: 100%; display: flex; gap: 70px;">
+    <div style="width: 200px; height: 100vh; position: sticky; top: 0">
+        <navbar />
     </div>
-  </main>
+    <main style="width: 100%;">
+        <div class="max-w-[1200px] mx-auto">
+            <router-view />
+        </div>
+    </main>
+  </div>
 </template>
 
 <script setup>

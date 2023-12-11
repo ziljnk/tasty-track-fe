@@ -1,0 +1,130 @@
+.food-upload-label {
+    display: block;
+    width: 300px;
+    height: 300px;
+    text-align: center;
+    outline: 3px dashed #000;
+    padding: 20px;
+    line-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    background-color: #fff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 30px;
+    margin-left: 30px;
+    font-family: 'Indie Flower', cursive;
+}
+
+.food-upload-label:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#uploaded-image {
+    width: 300px;
+    height: 300px;
+    border-radius: 16px;
+    outline: 3px dashed #000;
+    outline-offset: 10px;
+    margin-top: 40px;
+    margin-left: 30px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.text-upload {
+    font-family: 'Indie Flower', cursive;
+    font-size: 20px;
+}
+
+.detected-food {
+    padding-inline: 5px;
+    background-color: #4CAF50;
+    border-radius: 8px;
+}
+
+.detected-probability {
+    padding-inline: 5px;
+    background-color: #acaf4c;
+    border-radius: 8px;
+}
+
+.calories-container {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.calories-text {
+    font-family: 'Indie Flower', cursive;
+    margin-left: 30px;
+}
+
+.calories-percent {
+    height: 100%;
+    background-color: #ff5c5c;
+    transition: all .3s ease-in-out;
+}
+
+.fat-percent {
+    height: 100%;
+    transition: all .3s ease-in-out;
+    background-color: #3fcc3f;
+}
+
+.protein-percent {
+    height: 100%;
+    transition: all .3s ease-in-out;
+    background-color: #7077ff;
+}
+
+.carbs-percent {
+    height: 100%;
+    transition: all .3s ease-in-out;
+    background-color: #ff9400;
+}
+
+
+.nutrition-info-title {
+    font-weight: bold;
+    font-size: 36px;
+    margin-top: 40px;
+    margin-left: 30px;
+    font-family: 'Indie Flower', cursive;
+}
+
+.related-food {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 20px;
+    flex-wrap: wrap;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+
+.food-item {
+    width: 300px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transition: all 0.3s ease;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.food-item:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.title-food {
+    font-family: 'Indie Flower', cursive;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}

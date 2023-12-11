@@ -7,6 +7,11 @@ import MealsByLetter from '../views/MealsByLetter.vue'
 import MealsByName from '../views/MealsByName.vue'
 import MealDetails from '../views/MealDetails.vue'
 import Ingredients from '../views/Ingredients.vue'
+import Login from "../views/Login/Login.vue";
+import ChatRoom from "../views/ChatRoom/ChatRoom.vue";
+import ExercisesRoom from "../views/ExercisesRoom/ExercisesRoom.vue";
+import MealPlanner from "../views/MealPlanner/MealPlanner.vue";
+import InstructionsAnalyzer from "../views/InstructionAnalyzer/InstructionAnalyzer.vue";
 
 const routes = [
   {
@@ -42,12 +47,32 @@ const routes = [
         path: '/meal/:id',
         name: 'mealDetails',
         component: MealDetails
+      },
+      {
+        path: '/chat-room',
+        name: 'chatRoom',
+        component: ChatRoom
+      },
+      {
+        path: '/exercies-room',
+        name: 'exerciesRoom',
+        component: ExercisesRoom
+      },
+      {
+        path: '/meal-planner',
+        name: 'mealPlanner',
+        component: MealPlanner
+      },
+      {
+        path: '/instructions-analyzer',
+        name: 'instructionsAnalyzer',
+        component: InstructionsAnalyzer
       }
     ]
   },
   {
-    path: '/guest',
-    component: GuestLayout
+    path: '/login',
+    component: Login
   }
 ];
 
