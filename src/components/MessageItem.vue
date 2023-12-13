@@ -1,6 +1,6 @@
 <template>
     <div class="message-item-container" :style="message.sender === 'system' ? 'flex-direction: row' : 'flex-direction: row-reverse'">
-        <img :src="message.sender === 'system' ? 'src/assets/Homepage/png/tasty-track-logo-without-bg.png' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcW3CxpH756b-Vus8HxhXV05IDg01sLFENaAYOadIJvz2y1ZgNdNPV57q8-oxNKtB5VfE&usqp=CAU'"/>
+        <img :src="message.sender === 'system' ? '/tasty-track-logo-without-bg.png' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcW3CxpH756b-Vus8HxhXV05IDg01sLFENaAYOadIJvz2y1ZgNdNPV57q8-oxNKtB5VfE&usqp=CAU'"/>
         <span  style="white-space: pre-line" v-html="message.content" :class="message.sender === 'system' ? 'system-message' : 'user-message'"></span>
     </div>
 </template>
