@@ -59,7 +59,7 @@
         await fetch("https://lyfta.ai/workouts", {
             method: "POST",
             headers: {
-                "mode": "no-cors",
+                // "mode": "no-cors",
                 'Content-Type': 'application/json',
                 // Add any other headers if needed
             },
