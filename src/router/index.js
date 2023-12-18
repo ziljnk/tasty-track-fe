@@ -11,12 +11,22 @@ import ChatRoom from "../views/ChatRoom/ChatRoom.vue";
 import ExercisesRoom from "../views/ExercisesRoom/ExercisesRoom.vue";
 import MealPlanner from "../views/MealPlanner/MealPlanner.vue";
 import InstructionsAnalyzer from "../views/InstructionAnalyzer/InstructionAnalyzer.vue";
-
+import Login from "../views/Login/Login.vue";
+import Register from "../views/Register/Register.vue";
 const routes = [
+  {
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/register',
+    component: Register
+  },
   {
     path: '/',
     component: DefaultLayout,
     children: [
+      
       {
         path: "/",
         name: "home",
