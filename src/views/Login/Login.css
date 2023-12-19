@@ -288,3 +288,35 @@ button:hover{
     border-bottom: 1px solid #555;
     margin: 0 10px;
 }
+
+.btn-container-gg{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-google{
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px; /* Adjust the width and height to make it circular */
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ffffff; /* Set background color if needed */
+  border: 2px solid #cccccc; /* Set border color */
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-google:hover{
+    background-color: #f0f0f0; 
+    border-color: #999999;
+}
+
+.btn-google img{
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}

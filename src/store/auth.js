@@ -1,5 +1,5 @@
 // store/auth.js
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import firebaseConfig from '@/store/firebaseConfig';
 
 const app = firebaseConfig.app;
@@ -25,6 +25,17 @@ export const loginWithEmailAndPassword = async (email, password) => {
     return user;
   } catch (error) {
     console.error('Error during login:', error);
+    throw error;
+  }
+};
+
+export const logout = async () => {
+  try {
+    await signOut(auth);
+    console.log('Successfully logged out!');
+    return true;
+  } catch (error) {
+    console.error('Error during logout:', error);
     throw error;
   }
 };

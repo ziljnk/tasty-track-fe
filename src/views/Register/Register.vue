@@ -5,7 +5,7 @@
         <div class="container" id="home">
             <div class="login-left">
                 <div class="login-header">
-                    <h1>Welome to Tasty Track</h1>
+                    <h1>Register to Tasty Track</h1>
                     <p>Healty Mood, Wealthy Mood</p>
                 </div>
                 <form action="" class="login-form" autocomplete="off" @submit.prevent="handleRegister">
@@ -28,19 +28,15 @@
                             </div>
                         </div>
                         <div class="btn-container">
-                            <!-- <button class="btn-submit"
-                                style="background-color: rgb(61, 83, 204); color: white;">LogIn</button> -->
-                            <button class="btn-submit" >Register</button>
+                            <button class="btn-submit" style="background-color: rgb(61, 83, 204); color: white;">Register</button>
                         </div>
                     </div>
-                    <div class="login-footer">
-                        <div class="or-divider">Or</div>
-                        <a href="">
-                            <img width="30" src="https://img.icons8.com/fluency/512/google-logo.png" alt="google"
-                                @click="loginWithGoogle">Google
-                        </a>
-                    </div>
                 </form>
+                <div class="login-footer">
+                    <div class="or-divider">Or</div>
+                    <a href="" @click="back">Back to Log In
+                    </a>
+                </div>
             </div>
             <div class="login-right">
                 <div class="under-layer"></div>
@@ -52,11 +48,12 @@
 <script setup>
 import { ref } from 'vue';
 import { registerWithEmailAndPassword } from '@/store/auth';
+import { useRouter } from 'vue-router';
 
 
 const email = ref('');
 const password = ref('');
-
+const router = useRouter();
 
 const handleRegister = async () => {
     try {
@@ -65,6 +62,10 @@ const handleRegister = async () => {
         console.error('Error during register:', error);
 
     }
+};
+
+const back =  () => {
+    router.push('/login');
 };
 
 

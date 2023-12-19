@@ -30,17 +30,22 @@
                         <div class="btn-container">
                             <button class="btn-submit"
                                 style="background-color: rgb(61, 83, 204); color: white;">LogIn</button>
-                            <!-- <button class="btn-submit" >Register</button> -->
+                            <router-link :to="{ path: 'register' }"
+                                class="inline-flex justify-center items-center px-2 h-11 transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
+                                Register
+                            </router-link>
                         </div>
                     </div>
-                    <div class="login-footer">
-                        <div class="or-divider">Or</div>
-                        <a href="">
-                            <img width="30" src="https://img.icons8.com/fluency/512/google-logo.png" alt="google"
-                                @click="loginWithGoogle">Google
-                        </a>
-                    </div>
                 </form>
+                <div class="login-footer">
+                    <div class="or-divider">Or</div>
+                    <div class="btn-container-gg">
+                        <button @click="loginWithGoogle" class="btn-google">
+                        <img width="30" src="https://img.icons8.com/fluency/512/google-logo.png" alt="google">
+                    </button>
+                    </div>
+                    
+                </div>
             </div>
             <div class="login-right">
                 <div class="under-layer"></div>
@@ -51,18 +56,21 @@
 
 <script setup>
 import { ref } from 'vue';
-import { registerWithEmailAndPassword, loginWithEmailAndPassword } from '@/store/auth';
+import { loginWithEmailAndPassword } from '@/store/auth';
 import firebaseConfig from '@/store/firebaseConfig';
-import { getAuth, GoogleAuthProvider, signInWithPopup  } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 
 const app = firebaseConfig.app;
 const auth = getAuth(app);
 const email = ref('');
 const password = ref('');
+const router = useRouter();
 
 const handleLogin = async () => {
     try {
         await loginWithEmailAndPassword(email.value, password.value);
+        router.push('/');
     } catch (error) {
         console.error('Error during login:', error);
 
@@ -75,6 +83,7 @@ const loginWithGoogle = async () => {
     try {
         const result = await signInWithPopup(getAuth(), provider);
         console.log('Successfully logged in with Google!', result);
+        router.push('/');
     } catch (error) {
         console.error('Error during Google login:', error);
     }
