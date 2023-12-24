@@ -13,6 +13,8 @@ import MealPlanner from "../views/MealPlanner/MealPlanner.vue";
 import InstructionsAnalyzer from "../views/InstructionAnalyzer/InstructionAnalyzer.vue";
 import Login from "../views/Login/Login.vue";
 import Register from "../views/Register/Register.vue";
+import Profile from "../views/Profile/Profile.vue";
+
 const routes = [
   {
     path: '/login',
@@ -76,6 +78,11 @@ const routes = [
         path: '/instructions-analyzer',
         name: 'instructionsAnalyzer',
         component: InstructionsAnalyzer
+      },
+      {
+        path: '/profile',
+        name: 'profile',
+        component: Profile
       }
     ]
   }

@@ -45,6 +45,11 @@
         Login
       </router-link>
 
+      <router-link v-if="uid" :to="{ name: 'profile' }"
+        class="inline-flex items-center px-2 h-full transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
+        Profile
+      </router-link>
+
       <button v-if="uid" @click="logOut"
         class="inline-flex items-center px-2 h-full transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
         Log Out
