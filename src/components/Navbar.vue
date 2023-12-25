@@ -62,9 +62,11 @@
 import { ref } from 'vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { logout } from '@/store/auth';
+import { useRouter } from 'vue-router';
 
 const auth = getAuth();
 const uid = ref(''); // Initialize with a default value
+const router = useRouter();
 
 onAuthStateChanged(auth, (user) => {
   uid.value = user ? user.uid : '';
@@ -73,6 +75,7 @@ onAuthStateChanged(auth, (user) => {
 const logOut = async () => {
   try {
     await logout();
+    router.push('/');
     console.log('User logged out!');
   } catch (error) {
     console.error('Error during logout:', error);
