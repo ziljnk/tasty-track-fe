@@ -79,32 +79,42 @@
         </div>
 
         <div class="manageMeal-tab" v-if="currentTab === 'manageMeal'">
-            <table>
-                <th>
-                <td v-for="(item, index) in 7" :key="index">{{ item }}</td>
-                </th>
+            <div v-for="(item, index) in Object.keys(mealList)" :key="index">
+                <p class="meal-item-date">{{ item }}</p>
+                <div class="meal-container">
+                    <div class="meal-item-container" v-for="(mealInDay, index) in mealList[`${item}`]" :key="index">
+                        <img :src="mealInDay.image" />
+                        <div class="meal-item-infor">
+                            <p class="meal-item-name">Name: {{ mealInDay.name }}</p>
+                            <p class="meal-item-time">Time: {{ mealInDay.time }}</p>
+                        </div>
+                        <p class="meal-item-calories">{{ mealInDay.calories + ' Calories' }}</p>
+                    </div>
+                </div>
 
-                <tr v-for="(item, index) in 3" :key="index">
-                    <td v-for="(item, index) in 7" :key="index">{{ item + 'day' }}</td>
-                </tr>
-            </table>
+                <p class="total-calories">Total: {{ totalCaloriesByDay[`${item}`] }} Calories</p>
+            </div>
         </div>
     </div>
 </template>
   
 <script setup>
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onBeforeMount } from 'vue';
 import { fetchUserData } from '../../store/auth';
 import { ref as refStorage, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { STORAGE, FIRESTORE_DB } from '../../store/firebaseConfig'
-import { doc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { createToaster } from "@meforma/vue-toaster";
 import axios from 'axios';
 
 const selectedFile = ref(null);
 const uploadedImage = ref(null);
+const mealList = ref([]);
 let userId = ref('');
+const totalCaloriesByDay = ref({});
+
+const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const activityLevels = {
     'level_1': 'Sedentary: little or no exercise',
@@ -125,6 +135,78 @@ const toaster = createToaster({
 const changeTab = (tab) => {
     currentTab.value = tab;
 };
+
+async function fetchMeals() {
+    const userId = localStorage.getItem('userId');
+    const mealQuery = query(collection(FIRESTORE_DB, "meals"), where("userId", "==", userId), orderBy("timestamp", "desc"));
+    const querySnapshot = await getDocs(mealQuery);
+    querySnapshot.forEach((doc) => {
+        mealList.value.push({
+            name: doc.data().name,
+            calories: doc.data().calories,
+            date: timestampToWeekday(doc.data().timestamp),
+            time: timestampToTime(doc.data().timestamp),
+            image: doc.data().image,
+        })
+    });
+
+    totalCaloriesByDay.value = calculateTotalCalories(mealList.value);
+    mealList.value = separateByWeekday(mealList.value);
+}
+
+onBeforeMount(async () => {
+    await fetchMeals();
+});
+
+function timestampToWeekday(timestamp) {
+  const date = new Date(timestamp);
+  const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const dayOfWeek = date.getDay();
+  return weekdays[dayOfWeek];
+}
+
+function timestampToTime(timestamp) {
+  const date = new Date(timestamp);
+
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+
+  return `${hours}:${minutes}`;
+}
+
+function separateByWeekday(data) {
+  const separatedData = {};
+
+  data.forEach(item => {
+    const weekday = item.date;
+
+    if (!separatedData[weekday]) {
+      separatedData[weekday] = [];
+    }
+
+    separatedData[weekday].push(item);
+  });
+
+  return separatedData;
+}
+
+function calculateTotalCalories(mealsByDay) {
+  const totalCaloriesByDay = {};
+
+  mealsByDay.forEach((meal) => {
+    const { date, calories } = meal;
+
+    if (!totalCaloriesByDay[date]) {
+      totalCaloriesByDay[date] = 0;
+    }
+
+    totalCaloriesByDay[date] += calories;
+  });
+
+  return totalCaloriesByDay;
+}
+
 
 const show = async () => {
     if (result.value.age === 0 || result.value.weight === 0 || result.value.weight === height || result.value.gender === '' || result.value.activityLevel === '') {

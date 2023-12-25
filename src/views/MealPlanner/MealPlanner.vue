@@ -116,7 +116,7 @@
     
                 <div class="input-group">
                     <label class="label-input" for="meal-calories">Calories</label>
-                    <input v-model="mealCalories" class="input" id="meal-calories" type="text" placeholder="Enter your meal's calories..."/>
+                    <input v-model="mealCalories" class="input" id="meal-calories" type="number" placeholder="Enter your meal's calories..."/>
                 </div>
 
                 <button class="button-generate" @click="handleAddMeal">Add meal</button>
@@ -240,6 +240,7 @@
                 });
                 mealName.value = '';
                 mealCalories.value = '';
+                uploadedImage.value = null;
                 await toaster.success(`Add meal successfully !`);
             })
         });
