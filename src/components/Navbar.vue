@@ -50,7 +50,7 @@
         Profile
       </router-link>
 
-      <button v-if="uid" @click="logOut"
+      <button v-if="uid" @click="logOut" style="margin-top: 18vh;"
         class="inline-flex items-center px-2 h-full transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
         Log Out
       </button>
