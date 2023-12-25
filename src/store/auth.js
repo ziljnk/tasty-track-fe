@@ -21,7 +21,8 @@ export const loginWithEmailAndPassword = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    console.log('Successfully logged in!', user);
+    console.log('Successfully logged in!', user.user.uid);
+    localStorage.setItem('userId', user.user.uid);
     return user;
   } catch (error) {
     console.error('Error during login:', error);

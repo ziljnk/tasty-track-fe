@@ -83,6 +83,7 @@ const loginWithGoogle = async () => {
     try {
         const result = await signInWithPopup(getAuth(), provider);
         console.log('Successfully logged in with Google!', result);
+        localStorage.setItem('userId', result.user.uid);
         router.push('/');
     } catch (error) {
         console.error('Error during Google login:', error);
