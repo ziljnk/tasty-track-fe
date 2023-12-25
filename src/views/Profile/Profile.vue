@@ -72,7 +72,15 @@
         </div>
 
         <div class="manageMeal-tab" v-if="currentTab === 'manageMeal'">
-            def
+            <table>
+                <th>
+                    <td v-for="(item, index) in 7" :key="index">{{ item }}</td>
+                </th>
+
+                <tr v-for="(item, index) in 3" :key="index">
+                    <td v-for="(item, index) in 7" :key="index">{{ item + 'day' }}</td>
+                </tr>
+            </table>
         </div>
     </div>
 </template>
