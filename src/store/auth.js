@@ -42,7 +42,8 @@ export const registerWithEmailAndPassword = async (email, password) => {
                 activityLevel: "",
                 bmi: 0,
                 calories: 0,
-                image: "",
+                image: "https://firebasestorage.googleapis.com/v0/b/tastytrack-34638.appspot.com/o/images%2Fdefault.jpg?alt=media&token=73fdb17f-51bd-4efd-b313-26ae123b7ddd",
+                health:'undefined',
             });
         }
 
@@ -83,6 +84,7 @@ export const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
         const result = await signInWithPopup(auth, provider);
+        localStorage.setItem('userId', result.user.uid);
         const user = result.user;
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
@@ -98,7 +100,8 @@ export const loginWithGoogle = async () => {
                 activityLevel: "",
                 bmi: 0,
                 calories: 0,
-                image: "",
+                image: "https://firebasestorage.googleapis.com/v0/b/tastytrack-34638.appspot.com/o/images%2Fdefault.jpg?alt=media&token=73fdb17f-51bd-4efd-b313-26ae123b7ddd",
+                health:'undefined',
             });
         }
 
@@ -107,3 +110,22 @@ export const loginWithGoogle = async () => {
         console.error("Error during Google login:", error);
     }
 };
+
+export const fetchUserData = async (userId) => {
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnapshot = await getDoc(userDocRef);
+  
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        console.log("User data retrieved successfully!", userData);
+        return userData;
+      } else {
+        console.error('User data does not exist!');
+        return null;
+      }
+    } catch (error) {
+      console.error("Error getting user document:", error);
+      throw error;
+    }
+  };

@@ -80,7 +80,6 @@ const handleGoogle = async () => {
     try {
         const result = await loginWithGoogle();
         console.log('Successfully logged in with Google!', result);
-        localStorage.setItem('userId', result.user.uid);
         router.push('/');
     } catch (error) {
         console.error('Error during Google login:', error);

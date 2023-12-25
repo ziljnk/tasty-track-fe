@@ -12,58 +12,65 @@
 
         <div class="information-tab" v-if="currentTab === 'information'">
             <div class="left-column">
-                <div class="avatar-container">
-                    <img src="https://external-preview.redd.it/Ot_7l56sKeF7k7yF33xE4rsVUSC3ZtNfvLrr-o66KLo.jpg?auto=webp&s=d6bf7543974bb7bdf2536d2d80d0e41debd23777"
-                        alt="">
+                <div class="avatar-container" @click="openFileUpload">
+                    <img :src="result.image" alt="" />
+                    <input id="image-upload" ref="fileInput" @change="handleUploadFile" type="file" style="display: none" />
                 </div>
-                <p>{{ email }}</p>
+                <p style="color: rgb(5, 178, 5);">{{ result.email }}</p>
             </div>
             <div class="right-column">
                 <div class="profile-section">
                     <div class="button-container-profile">
-                        <button>Edit Profile</button>
+                        <button @click="show">Edit Profile</button>
                     </div>
 
                     <div class="info-container">
                         <div class="infor-input">
                             <label for="name">Name:</label>
-                            <input class="i-text" type="text" id="name" v-model="name" />
+                            <input class="i-text" type="text" id="name" v-model="result.name" />
                         </div>
                         <div class="infor-input">
                             <label for="name">Age:</label>
-                            <input class="i-num" type="number" id="name" v-model="age" min="0" />
+                            <input class="i-num" type="number" id="name" v-model="result.age" min="0" />
                         </div>
                         <div class="infor-input">
                             <label for="gender">Gender:</label>
-                            <select id="gender" v-model="gender" class="i-num">
+                            <select id="gender" v-model="result.gender" class="i-num">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
                         </div>
                         <div class="infor-input">
                             <label for="name">Height:</label>
-                            <input class="i-num" type="number" id="height" v-model="height" min="0" />
+                            <input class="i-num" type="number" id="height" v-model="result.height" min="0" />
                             <span>( cm )</span>
                         </div>
                         <div class="infor-input">
                             <label for="name">Weight:</label>
-                            <input class="i-num" type="number" id="weight" v-model="weight"  min="0"/>
+                            <input class="i-num" type="number" id="weight" v-model="result.weight" min="0" />
                             <span>( kg )</span>
 
                         </div>
                         <div class="infor-input">
-                            <label for="name">Activity Level:</label>
-                            <input class="i-text" type="text" v-model="activity" disabled />
+                            <label for="activity">Activity Level:</label>
+                            <select id="activity" v-model="result.activityLevel" class="i-text">
+                                <option v-for="(label, value) in activityLevels" :value="value" :key="value">{{ label }}
+                                </option>
+                            </select>
                         </div>
+                        <div class="dashed-line"></div>
                         <div class="infor-input">
                             <label for="name">BMI:</label>
-                            <input class="i-num" type="number" v-model="bmi" disabled />
-                            <span style="color: rgb(28, 196, 28);">( {{ health }} )</span>
+                            <span class="s-num"
+                                :style="{ color: result.bmi < 18.5 ? 'blue' : result.bmi < 25 ? 'rgb(55, 178, 55)' : result.bmi < 30 ? 'orange' : 'red' }">
+                                {{ result.bmi + " ( " + result.health + ' )' }}
+                            </span>
                         </div>
                         <div class="infor-input">
                             <label for="name">Daily Calories:</label>
-                            <input class="i-num" type="number" v-model="calories" disabled />
-                            <span>( Calories/day )</span>
+                            <span class="s-num">
+                                {{ result.calories + " ( Calories/day )" }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -74,7 +81,7 @@
         <div class="manageMeal-tab" v-if="currentTab === 'manageMeal'">
             <table>
                 <th>
-                    <td v-for="(item, index) in 7" :key="index">{{ item }}</td>
+                <td v-for="(item, index) in 7" :key="index">{{ item }}</td>
                 </th>
 
                 <tr v-for="(item, index) in 3" :key="index">
@@ -86,23 +93,149 @@
 </template>
   
 <script setup>
-import { ref } from 'vue';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onMounted, ref } from 'vue';
+import { fetchUserData } from '../../store/auth';
+import { ref as refStorage, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { STORAGE, FIRESTORE_DB } from '../../store/firebaseConfig'
+import { doc, updateDoc } from 'firebase/firestore';
+import { createToaster } from "@meforma/vue-toaster";
+import axios from 'axios';
 
+const selectedFile = ref(null);
+const uploadedImage = ref(null);
+let userId = ref('');
 
+const activityLevels = {
+    'level_1': 'Sedentary: little or no exercise',
+    'level_2': 'Exercise 1-3 times/week',
+    'level_3': 'Exercise 4-5 times/week',
+    'level_4': 'Daily exercise or intense exercise 3-4 times/week',
+    'level_5': 'Intense exercise 6-7 times/week',
+    'level_6': 'Very intense exercise daily, or physical job'
+};
 const currentTab = ref('information');
-const name = ref('John Doe');
-const email = ref('john.doe@example.com');
-const age = ref(25);
-const gender = ref('male');
-const health = ref('Normal');
-const activity = ref('Exercise 1-3 times/week');
-const height = ref(175);
-const weight = ref(70);
-const bmi = ref(23.5);
-const calories = ref(2350);
+let result = ref({});
+const toaster = createToaster({
+    position: "top-right",
+    duration: 3000,
+    singleton: true,
+});
 
 const changeTab = (tab) => {
     currentTab.value = tab;
 };
+
+const show = async () => {
+    if (result.value.age === 0 || result.value.weight === 0 || result.value.weight === height || result.value.gender === '' || result.value.activityLevel === '') {
+        toaster.error("Please fill all fields !");
+        return;
+    }
+
+    try {
+        const response1 = await axios.request({
+            method: 'GET',
+            url: 'https://fitness-calculator.p.rapidapi.com/bmi',
+            params: {
+                age: result.value.age,
+                weight: result.value.weight,
+                height: result.value.height
+            },
+            headers: {
+                'X-RapidAPI-Key': '2ebbff26c9msh030738ee59a8487p1564b7jsn44a4726d98bd',
+                'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
+            }
+        });
+        if (response1.status === 200) {
+            result.value.bmi = response1.data.data.bmi
+            result.value.health = response1.data.data.health
+        }
+        const response2 = await axios.request({
+            method: 'GET',
+            url: 'https://fitness-calculator.p.rapidapi.com/dailycalorie',
+            params: {
+                age: result.value.age,
+                gender: result.value.gender,
+                height: result.value.height,
+                weight: result.value.weight,
+                activitylevel: result.value.activityLevel,
+            },
+            headers: {
+                'X-RapidAPI-Key': '2ebbff26c9msh030738ee59a8487p1564b7jsn44a4726d98bd',
+                'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
+            }
+        });
+        if (response2.status === 200) {
+            result.value.calories = response2.data.data.goals['maintain weight']
+            console.log(response2.data.data.goals)
+        }
+        await updateUserData(userId, {
+            name: result.value.name,
+            age: result.value.age,
+            gender: result.value.gender,
+            height: result.value.height,
+            weight: result.value.weight,
+            activityLevel: result.value.activityLevel,
+            bmi: result.value.bmi,
+            health: result.value.health,
+            calories: result.value.calories,
+        });
+        await toaster.success(`Edit Profile successfully !`);
+        result.value = await fetchUserData(userId);
+
+    } catch (error) {
+        console.error(error);
+    }
+
+};
+
+const openFileUpload = () => {
+    const fileInput = document.getElementById('image-upload');
+    if (fileInput) {
+        fileInput.click();
+    }
+};
+
+async function handleUploadFile(e) {
+    let timestamp = new Date().getTime();
+    selectedFile.value = e.target.files[0];
+    const storageRef = refStorage(STORAGE, 'avatars/' + timestamp + '_' + selectedFile.value.name);
+    const snapshot = await uploadBytes(storageRef, selectedFile.value);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    uploadedImage.value = downloadURL;
+
+    await updateUserData(userId, { image: downloadURL });
+    await toaster.success(`Upload image successfully !`);
+    result.value = await fetchUserData(userId);
+}
+
+async function updateUserData(userId, newData) {
+    try {
+        const userDocRef = doc(FIRESTORE_DB, "users", userId);
+        await updateDoc(userDocRef, newData);
+        console.log("User data updated successfully!");
+    } catch (error) {
+        console.error("Error updating user document:", error);
+        throw error;
+    }
+}
+
+
+
+onMounted(async () => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            userId = user.uid;
+            try {
+                result.value = await fetchUserData(userId);
+            } catch (error) {
+                console.error('Lỗi khi lấy dữ liệu người dùng:', error);
+            }
+        } else {
+            console.error('Người dùng chưa đăng nhập hoặc có lỗi xảy ra.');
+        }
+    });
+});
 </script>
   

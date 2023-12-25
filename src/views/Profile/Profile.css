@@ -24,6 +24,7 @@
     width: 100%;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 0 5px 5px 5px;
+    background-color: #fff;
 }
 .information-tab {
     display: flex;
@@ -57,12 +58,19 @@
 }
 
 .avatar-container {
-    width: 25vh;
-    height: 25vh;
+    width: 15vw;
+    height: 15vw;
     background-color: #ccc;
     border-radius: 50%;
     overflow: hidden;
     margin-top: 2vh;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.avatar-container:hover{
+    border: 3px solid rgb(0, 255, 34);
+
 }
 
 .avatar-container img {
@@ -126,4 +134,20 @@
 .button-container-profile button:hover{
     background-color: rgb(25, 146, 233);
 
+}
+
+
+.infor-input .s-num {
+    margin: 1vh 1vw;
+    height: 60%;
+}
+
+.dashed-line{
+    margin-top: 3vh;
+    border: 0.1px solid rgb(205, 205, 205);
+}
+
+
+#image-upload {
+    display: none;
 }
