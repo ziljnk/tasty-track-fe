@@ -40,7 +40,7 @@
                 <div class="login-footer">
                     <div class="or-divider">Or</div>
                     <div class="btn-container-gg">
-                        <button @click="loginWithGoogle" class="btn-google">
+                        <button @click="handleGoogle" class="btn-google">
                         <img width="30" src="https://img.icons8.com/fluency/512/google-logo.png" alt="google">
                     </button>
                     </div>
@@ -56,13 +56,11 @@
 
 <script setup>
 import { ref } from 'vue';
-import { loginWithEmailAndPassword } from '@/store/auth';
+import { loginWithEmailAndPassword,loginWithGoogle } from '@/store/auth';
 import firebaseConfig from '@/store/firebaseConfig';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 
 const app = firebaseConfig.app;
-const auth = getAuth(app);
 const email = ref('');
 const password = ref('');
 const router = useRouter();
@@ -78,10 +76,9 @@ const handleLogin = async () => {
 };
 
 
-const loginWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
+const handleGoogle = async () => {
     try {
-        const result = await signInWithPopup(getAuth(), provider);
+        const result = await loginWithGoogle();
         console.log('Successfully logged in with Google!', result);
         localStorage.setItem('userId', result.user.uid);
         router.push('/');
