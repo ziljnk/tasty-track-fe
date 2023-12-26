@@ -12,9 +12,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import store from "../store";
 import Meals from "../components/meals.vue";
-import axiosClient from "../axiosClient.js";
 import { createToaster } from "@meforma/vue-toaster";
 
 const meals = ref([]);
@@ -59,7 +57,7 @@ async function handleGetRandomMeal() {
         } catch (error) {
             console.error("Error:", error);
         }
-    }
+}
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-<div class="max-w-[800px] mx-auto p-8">
+<div class="max-w-[800px] mx-auto p-8" v-if="Object.keys(meal).length > 0">
     <h1 class="text-4xl font-bold mb-5 text-green-500">{{ meal?.title }}</h1>
     <img :src="meal?.image" :alt="meal?.title" class="max-w-[100%] details-image">
     <div class="grid grid-cols-1 sm:grid-cols-3 text-lg py-2">

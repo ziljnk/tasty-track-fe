@@ -30,10 +30,10 @@
         Search Meals
       </router-link>
 
-      <router-link :to="{ name: 'byLetter' }"
+      <!-- <router-link :to="{ name: 'byLetter' }"
         class="inline-flex items-center px-2 h-full transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
         Meals By Letter
-      </router-link>
+      </router-link> -->
 
       <router-link :to="{ name: 'ingredients' }"
         class="inline-flex items-center px-2 h-full transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
