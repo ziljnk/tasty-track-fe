@@ -4,7 +4,13 @@
     <router-link :to="{ name: 'home' }" class="inline-flex items-center px-5 text-orange-500 font-bold">
       <img src="/tasty-track-logo-without-bg.png" width="90" height="90" />
     </router-link>
+    
     <div class="flex items-start gap-1" style="flex-direction: column;">
+      <router-link  v-if="uid" :to="{ name: 'home' }"
+        class="inline-flex items-center px-2 transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
+        Random Meal
+      </router-link>
+
       <router-link  v-if="uid" :to="{ name: 'mealPlanner' }"
         class="inline-flex items-center px-2 transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
         Meal Planner
@@ -50,8 +56,8 @@
         Profile
       </router-link>
 
-      <button v-if="uid" @click="logOut" style="margin-top: 18vh;"
-        class="inline-flex items-center px-2 h-full transition-colors hover:bg-green-500 hover:text-white w-full p-3 rounded-lg">
+      <button v-if="uid" @click="logOut" style="margin-top: 12vh;"
+        class="inline-flex items-center px-2 h-full transition-colors hover:bg-red-500 hover:text-white w-full p-3 rounded-lg">
         Log Out
       </button>
     </div>
