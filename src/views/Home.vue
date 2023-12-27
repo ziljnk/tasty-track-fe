@@ -12,7 +12,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import Meals from "../components/meals.vue";
+import Meals from "../components/Meals.vue";
 import { createToaster } from "@meforma/vue-toaster";
 
 const meals = ref([]);
