@@ -5,7 +5,7 @@
     class="px-3 py-2 rounded text-white transition-colors"
     style="background-color: #7bcb0b; border-color: #7bcb0b"
   >
-    <slot>YouTube</slot>
+    <slot>Instruction</slot>
   </a>
 </template>
 
